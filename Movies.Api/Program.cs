@@ -1,7 +1,9 @@
 using Movies.Application;
+using Movies.Application.Database;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
+var sqlServerConnection = configuration["Database:sqlServer:ConnectionString"]!;
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -11,6 +13,9 @@ builder.Services.AddSwaggerGen();
 
 // register ApplicationServiceExtension class from Movies.Application project
 builder.Services.AddApplication();
+
+// register database
+builder.Services.AddDatabase(sqlServerConnection);
 
 var app = builder.Build();
 
@@ -26,5 +31,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// use dbinitializer
+var dbInitializer = app.Services.GetRequiredService<DBInitializer>();
+await dbInitializer.InitializeAsync();
 
 app.Run();
