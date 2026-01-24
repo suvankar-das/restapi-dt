@@ -39,4 +39,10 @@ public class MovieRepository : IMovieRepository
         var movieRemoved = removedCount > 0;
         return Task.FromResult(movieRemoved);
     }
+
+    public Task<Movie?> GetMovieBySlugAsync(string slug)
+    {
+        var movie = _movies.SingleOrDefault(m => m.Slug == slug);
+        return Task.FromResult(movie);
+    }
 }

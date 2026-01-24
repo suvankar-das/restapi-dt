@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Mapping;
-using Movies.Application.Models;
 using Movies.Application.Repositories;
 using Movies.Application.Requests;
-using Movies.Application.Responses;
 
 namespace Movies.Api.Controllers
 {
@@ -24,13 +21,14 @@ namespace Movies.Api.Controllers
             var movieCreate = movieRequest.CreateMovieRequestToMovie();
             await _movieRepository.CreateMovieAsync(movieCreate);
             var response = movieCreate.CreateMovieResponseFromMovie();
-            return CreatedAtAction(nameof(GetMovieById), new { Id = movieCreate.Id }, response);
+            return CreatedAtAction(nameof(GetMovieById), new { slugOrId = movieCreate.Id }, response);
         }
 
         [HttpGet(ApiEndpoints.Movies.GetMovieById)]
-        public async Task<IActionResult> GetMovieById([FromRoute] Guid id)
+        public async Task<IActionResult> GetMovieById([FromRoute] string slugOrId)
         {
-            var movie = await _movieRepository.GetMovieByIdAsync(id);
+            var isGuid = Guid.TryParse(slugOrId, out var idGuid);
+            var movie = isGuid ? await _movieRepository.GetMovieByIdAsync(idGuid) : await _movieRepository.GetMovieBySlugAsync(slugOrId);
             if (movie == null)
             {
                 return NotFound();
