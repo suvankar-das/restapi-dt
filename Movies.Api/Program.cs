@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 
 // register database
-builder.Services.AddDatabase(sqlServerConnection);
+builder.Services.AddSqlServerDatabase(sqlServerConnection);
 
 var app = builder.Build();
 
@@ -32,7 +32,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// use dbinitializer
+// use db initializer
 var dbInitializer = app.Services.GetRequiredService<DBInitializer>();
 await dbInitializer.InitializeAsync();
 
