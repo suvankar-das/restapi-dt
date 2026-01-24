@@ -1,4 +1,6 @@
-﻿namespace Movies.Application.Requests;
+﻿using Movies.Application.Models;
+
+namespace Movies.Application.Requests;
 
 public class UpdateMovieRequest
 {
