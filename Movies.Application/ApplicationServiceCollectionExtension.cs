@@ -15,7 +15,7 @@ public static class ApplicationServiceCollectionExtension
 
     public static IServiceCollection AddSqlServerDatabase(this IServiceCollection services, string connectionString)
     {
-        services.AddSingleton<IDBConnectionFactory>(_ => new SqlServerConnectionFactory(connectionString));
+        services.AddSingleton<IDbConnectionFactory>(_ => new SqlServerConnectionFactory(connectionString));
         // initialise dbinitializer class for tables creation
         services.AddSingleton<DBInitializer>();
         return services;

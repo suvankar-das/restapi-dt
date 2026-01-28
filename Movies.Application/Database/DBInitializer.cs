@@ -4,9 +4,9 @@ namespace Movies.Application.Database;
 
 public class DBInitializer
 {
-    private readonly IDBConnectionFactory _dbConnectionFactory;
+    private readonly IDbConnectionFactory _dbConnectionFactory;
 
-    public DBInitializer(IDBConnectionFactory dbConnectionFactory)
+    public DBInitializer(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
     }
@@ -32,6 +32,22 @@ public class DBInitializer
                                           CREATE UNIQUE INDEX UX_Movies_Slug
                                           ON dbo.Movies (Slug);
                                       END
+                                      """);
+
+        await connection.ExecuteAsync("""
+                                      IF OBJECT_ID(N'dbo.Genres', N'U') IS NULL
+                                      BEGIN
+                                          CREATE TABLE dbo.Genres
+                                          (
+                                              MovieId UNIQUEIDENTIFIER NULL,
+                                              Name NVARCHAR(100) NOT NULL,
+                                      
+                                              CONSTRAINT FK_Genres_Movies
+                                                  FOREIGN KEY (MovieId)
+                                                  REFERENCES dbo.Movies(Id)
+                                          );
+                                      END
+
                                       """);
     }
 

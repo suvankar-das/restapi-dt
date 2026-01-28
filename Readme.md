@@ -1,4 +1,4 @@
-HelpersJsonCollection has 2 files
+﻿HelpersJsonCollection has 2 files
 -	movies.json (dummy movies data)
 -  course.postman_collection.json (Postman collection for testing the API)
      - Import the collection into Postman to test the API endpoints.
@@ -10,3 +10,69 @@ HelpersJsonCollection has 2 files
 - Movies.Contracts defines endpoints so that later if we publish this as nuget package then enduser can consume those endpoints.
 
 
+### Dapper cheatsheet
+
+---
+
+# 🧾 Dapper Methods – Cheatsheet
+
+## 🔹 SELECT
+
+```csharp
+Query<T>()                  // many rows
+QueryAsync<T>()
+
+QuerySingle<T>()            // exactly 1 row
+QuerySingleOrDefault<T>()   // 0 or 1 row
+
+QueryFirst<T>()             // first row
+QueryFirstOrDefault<T>()
+```
+
+---
+
+## 🔹 INSERT / UPDATE / DELETE
+
+```csharp
+Execute()
+ExecuteAsync()
+```
+
+---
+
+## 🔹 SCALAR (single value)
+
+```csharp
+ExecuteScalar<T>()
+ExecuteScalarAsync<T>()
+```
+
+---
+
+## 🔹 MULTIPLE RESULT SETS
+
+```csharp
+QueryMultiple()
+QueryMultipleAsync()
+```
+
+---
+---
+
+## 🔹 TRANSACTION USAGE
+
+```csharp
+Execute(sql, param, transaction)
+Query(sql, param, transaction)
+```
+
+---
+
+## 🔹 RULE OF THUMB
+
+* **All writes → `Execute`**
+* **Reads → `Query`**
+* **Single value → `ExecuteScalar`**
+* **Transaction থাকলে → সব call-এ pass করো**
+
+---

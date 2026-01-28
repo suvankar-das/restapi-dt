@@ -1,26 +1,10 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿
+
+using System.Data;
 
 namespace Movies.Application.Database;
 
-public interface IDBConnectionFactory
+public interface IDbConnectionFactory
 {
     Task<IDbConnection> CreateConnectionAsync();
-}
-
-public class SqlServerConnectionFactory : IDBConnectionFactory
-{
-    private readonly string _connectionString;
-
-    public SqlServerConnectionFactory(string connectionString)
-    {
-        _connectionString = connectionString;
-    }
-
-    public async Task<IDbConnection> CreateConnectionAsync()
-    {
-        var connection = new SqlConnection(_connectionString);
-        await connection.OpenAsync();
-        return connection;
-    }
 }
